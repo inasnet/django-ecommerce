@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404 , redirect
 from .models import Product, Category
 from django.views import View
 
@@ -24,3 +24,36 @@ def category_detail(request, pk):
     category = get_object_or_404(Category, id=pk)
     products = category.products.all()  # Utilisation de related_name='products'
     return render(request, 'category_detail.html', {'category': category, 'products': products})
+def add_to_cart(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    cart = request.session.get("cart", {})
+
+    product_id = str(product.id)
+
+    if product_id in cart:
+        cart[product_id]["quantity"] += 1
+    else:
+        cart[product_id] = {
+            "name": product.name,
+            "price": float(product.price),
+            "quantity": 1,
+        }
+
+    request.session["cart"] = cart
+
+    return redirect("cart")
+
+
+def cart(request):
+    cart = request.session.get("cart", {})
+
+    total = 0
+    for item in cart.values():
+        item["total"] = item["price"] * item["quantity"]
+        total += item["total"]
+
+    return render(request, "cart.html", {
+        "cart": cart,
+        "total": total
+    })

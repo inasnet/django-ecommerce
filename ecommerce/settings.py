@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products',
+    'accounts',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,3 +135,7 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "images"
+
+LOGIN_REDIRECT_URL = "profile"
+LOGOUT_REDIRECT_URL = "product_list"
+LOGIN_URL = "login"

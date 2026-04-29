@@ -1,12 +1,51 @@
 {% extends 'layout.html' %}
 
-{% block title %}Détail du produit{% endblock %}
+{% block title %}
+Détail du produit
+{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm p-4">
-    <h2 class="mb-3">{{ product.name }}</h2>
-    <h4 class="text-primary mb-3">{{ product.price }} €</h4>
-    <p class="mb-4">{{ product.description }}</p>
-    <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">Retour</a>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        <div class="card border-0 shadow-sm p-4">
+            <div class="row align-items-center">
+
+                <div class="col-md-6 text-center">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}"
+                             class="img-fluid rounded"
+                             alt="{{ product.name }}"
+                             style="max-height: 350px; object-fit: contain;">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-3">{{ product.name }}</h2>
+
+                    <h3 class="text-success fw-bold mb-3">
+                        {{ product.price }} €
+                    </h3>
+
+                    <p class="text-muted mb-4">
+                        {{ product.description }}
+                    </p>
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">
+                            ← Retour
+                        </a>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+                            Ajouter au panier
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
 {% endblock %}

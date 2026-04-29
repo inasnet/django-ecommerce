@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Mon panier
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Mon panier</h2>
+
+{% if cart %}
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for id, item in cart.items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.price }} €</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.total }} €</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4 class="text-end">
+                Total : {{ total }} €
+            </h4>
+
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        Votre panier est vide.
+    </div>
+{% endif %}
+
+<a href="{% url 'product_list' %}" class="btn btn-outline-secondary mt-3">
+    Continuer mes achats
+</a>
+
+{% endblock %}
