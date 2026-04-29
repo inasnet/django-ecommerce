@@ -27,4 +27,8 @@ Projet e-commerce développé avec Django permettant la gestion des produits, de
 - Design Bootstrap moderne
 - Responsive (mobile + desktop)
 
+##  Run project
 
+```bash
+python manage.py migrate
+python manage.py runserver
