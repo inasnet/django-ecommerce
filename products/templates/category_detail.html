@@ -1,15 +1,47 @@
-<h1>Produits dans la catégorie : {{ category.name }}</h1>
+{% extends 'layout.html' %}
 
-<ul>
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+
+<div class="section-heading">
+    <div>
+        <h1>{{ category.name }}</h1>
+        <p>{{ category.description|default:"Produits disponibles dans cette categorie." }}</p>
+    </div>
+</div>
+
+<div class="row g-4">
     {% for product in products %}
-        <li>
-            <a href="{% url 'product_detail' product.pk %}">
-                {{ product.name }}
-            </a>
-        </li>
+        <div class="col-sm-6 col-xl-4">
+            <article class="product-card">
+                <div class="product-media">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="text-muted fw-semibold">Image indisponible</div>
+                    {% endif %}
+                </div>
+                <div class="product-body">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-desc">{{ product.description|truncatechars:90 }}</p>
+                    <div class="price-row">
+                        <span class="price">{{ product.price }} €</span>
+                        <span class="stock-pill">Stock {{ product.stock }}</span>
+                    </div>
+                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary w-100 mt-4">Voir details</a>
+                </div>
+            </article>
+        </div>
     {% empty %}
-        <p>Aucun produit dans cette catégorie.</p>
+        <div class="col-12">
+            <div class="soft-panel p-5 text-center">
+                <h3 class="fw-bold">Aucun produit dans cette categorie</h3>
+            </div>
+        </div>
     {% endfor %}
-</ul>
+</div>
 
-<a href="{% url 'category_list' %}">Retour aux catégories</a>
+<a href="{% url 'category_list' %}" class="btn btn-outline-secondary mt-4">Retour aux categories</a>
+
+{% endblock %}

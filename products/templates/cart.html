@@ -1,48 +1,51 @@
 {% extends 'layout.html' %}
 
-{% block title %}
-Mon panier
-{% endblock %}
+{% block title %}Mon panier{% endblock %}
 
 {% block content %}
 
-<h2 class="mb-4">Mon panier</h2>
+<div class="section-heading">
+    <div>
+        <h1>Mon panier</h1>
+        <p>Verifiez vos articles avant de continuer vos achats.</p>
+    </div>
+</div>
 
 {% if cart %}
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
+    <div class="soft-panel p-3 p-md-4">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantite</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
 
-            <table class="table">
-                <thead>
+            <tbody>
+                {% for id, item in cart.items %}
                     <tr>
-                        <th>Produit</th>
-                        <th>Prix</th>
-                        <th>Quantité</th>
-                        <th>Total</th>
+                        <td class="fw-bold">{{ item.name }}</td>
+                        <td>{{ item.price }} €</td>
+                        <td>{{ item.quantity }}</td>
+                        <td class="fw-bold">{{ item.total }} €</td>
                     </tr>
-                </thead>
+                {% endfor %}
+            </tbody>
+        </table>
 
-                <tbody>
-                    {% for id, item in cart.items %}
-                        <tr>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.price }} €</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>{{ item.total }} €</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <h4 class="text-end">
-                Total : {{ total }} €
-            </h4>
-
+        <div class="d-flex justify-content-end mt-4">
+            <div class="soft-panel p-3 shadow-none">
+                <span class="text-muted me-3">Total</span>
+                <strong class="price">{{ total }} €</strong>
+            </div>
         </div>
     </div>
 {% else %}
-    <div class="alert alert-info">
-        Votre panier est vide.
+    <div class="soft-panel p-5 text-center">
+        <h3 class="fw-bold">Votre panier est vide</h3>
+        <p class="text-muted mb-0">Parcourez les produits et ajoutez vos favoris.</p>
     </div>
 {% endif %}
 

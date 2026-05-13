@@ -17,20 +17,33 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images')  # Django stockera les images dans "images/"
+def load_dotenv(path):
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wcbdop$xuq+r##77&s8x6fj-w_0p4wk8@))njsd2ucfj&wq55&'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS",
+    "localhost,127.0.0.1",
+).split(",")
 
 
 # Application definition
@@ -47,6 +60,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,11 +95,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DB_ECOMMERCE',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.environ.get('MYSQL_DATABASE', 'DB_ECOMMERCE'),
+        'USER': os.environ.get('MYSQL_USER', 'django'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'django'),
+        'HOST': os.environ.get('MYSQL_HOST', 'db'),
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
@@ -128,13 +145,14 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "images"
+MEDIA_ROOT = BASE_DIR / os.environ.get("DJANGO_MEDIA_ROOT", "images")
 
 LOGIN_REDIRECT_URL = "profile"
 LOGOUT_REDIRECT_URL = "product_list"

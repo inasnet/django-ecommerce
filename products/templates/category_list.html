@@ -1,13 +1,33 @@
-<h1>Catégories</h1>
+{% extends 'layout.html' %}
 
-<ul>
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+<div class="section-heading">
+    <div>
+        <h1>Categories</h1>
+        <p>Explorez les familles de produits disponibles.</p>
+    </div>
+</div>
+
+<div class="row g-3">
     {% for category in categories %}
-        <li>
-            <a href="{% url 'category_detail' category.id %}">
-                {{ category.name }}
+        <div class="col-md-4">
+            <a class="soft-panel d-block p-4 text-decoration-none text-dark h-100" href="{% url 'category_detail' category.id %}">
+                <h3 class="fw-bold mb-2">{{ category.name }}</h3>
+                <p class="text-muted mb-0">{{ category.description|default:"Voir les produits de cette categorie." }}</p>
             </a>
-        </li>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="soft-panel p-5 text-center">
+                <h3 class="fw-bold">Aucune categorie</h3>
+            </div>
+        </div>
     {% endfor %}
-</ul>
+</div>
 
-<a href="{% url 'product_list' %}">Voir les produits</a>
+<a href="{% url 'product_list' %}" class="btn btn-outline-secondary mt-4">Voir les produits</a>
+
+{% endblock %}

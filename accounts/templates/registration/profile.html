@@ -1,70 +1,57 @@
 {% extends 'layout.html' %}
 
-{% block title %}
-Mon profil
-{% endblock %}
+{% block title %}Mon profil{% endblock %}
 
 {% block content %}
 
 <div class="row justify-content-center">
-    <div class="col-md-7">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-
-                <h2 class="mb-3">Mon profil</h2>
-
-                <p class="text-muted">
-                    Cette page est protégée. Elle est accessible uniquement aux utilisateurs connectés.
-                </p>
-
-                <h4 class="mb-3">Informations du compte</h4>
-
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <strong>Nom d’utilisateur :</strong> {{ user.username }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Email :</strong> {{ user.email }}
-                    </li>
-                    
-                    <li class="list-group-item">
-                        <strong>Staff :</strong> {{ user.is_staff }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Superutilisateur :</strong> {{ user.is_superuser }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Prénom :</strong> {{ user.first_name }}
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong>Nom :</strong> {{ user.last_name }}
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong>Adresse :</strong> {{ user.profile.address }}
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong>Téléphone :</strong> {{ user.profile.phone_number }}
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong>Genre :</strong> {{ user.profile.get_gender_display }}
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong>Date de naissance :</strong> {{ user.profile.birth_date }}
-                    </li>
-                
-
-                </ul>
-
-                <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3 w-100">
-                    Modifier mes informations
-                </a>
-
+    <div class="col-lg-8">
+        <div class="soft-panel p-4 p-md-5">
+            <div class="section-heading">
+                <div>
+                    <h1>Mon profil</h1>
+                    <p>Vos informations personnelles et votre compte.</p>
+                </div>
             </div>
+
+            <ul class="list-group profile-list mb-4">
+                <li class="list-group-item">
+                    <strong>Nom d'utilisateur</strong>
+                    <span>{{ user.username }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Email</strong>
+                    <span>{{ user.email|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Prenom</strong>
+                    <span>{{ user.first_name|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Nom</strong>
+                    <span>{{ user.last_name|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Adresse</strong>
+                    <span>{{ user.profile.address|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Telephone</strong>
+                    <span>{{ user.profile.phone_number|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Genre</strong>
+                    <span>{{ user.profile.get_gender_display|default:"-" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Date de naissance</strong>
+                    <span>{{ user.profile.birth_date|default:"-" }}</span>
+                </li>
+            </ul>
+
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary w-100">
+                Modifier mes informations
+            </a>
         </div>
     </div>
 </div>
